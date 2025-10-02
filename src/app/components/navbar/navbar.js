@@ -5,12 +5,28 @@ import Link from "next/link";
 
 import Logo from "@/assets/imgs/Logo.svg";
 
+import { useSession } from "next-auth/react";
+
 export default function NavGundamAuction() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [isLive, setIsLive] = useState(true);
+
+  const { data: session, status } = useSession();
+
   const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(()=> {
+    let session_status = false
+    if (status === 'unauthenticated') {
+      session_status = false
+    } else if (status === 'authenticated') {
+      session_status = true
+    }
+    setIsLogin(session_status)
+    // alert(status)
+  }, [status])
 
   useEffect(() => {
     const t = setInterval(() => setIsLive((s) => !s), 4000);
@@ -52,19 +68,22 @@ export default function NavGundamAuction() {
                 Auctions
               </Link>
 
-              {isLogin ? (<Link
-                href="/profile"
-                className="px-3 py-2 rounded-md bg-white text-red-700 font-semibold hover:opacity-95"
-              >
-                Profile
-              </Link>) : <Link
-                href="/auth"
-                className="px-3 py-2 rounded-md bg-white text-red-700 font-semibold hover:opacity-95"
-              >
-                Login
-              </Link>}
+              {isLogin ? (
+                <Link
+                  href="/profile"
+                  className="px-3 py-1 rounded-md bg-white text-red-700 font-semibold hover:opacity-95"
+                >
+                  {session?.user?.name}
+                </Link>
+              ) : (
+                <Link
+                  href="/auth"
+                  className="px-3 py-2 rounded-md bg-white text-red-700 font-semibold hover:opacity-95"
+                >
+                  Login
+                </Link>
+              )}
             </div>
-
 
             {/* mobile menu button */}
             <div className="sm:hidden">
@@ -96,15 +115,24 @@ export default function NavGundamAuction() {
         {mobileOpen && (
           <div className="sm:hidden mt-2 pb-4">
             <div className="space-y-2 px-2">
-              <Link href="/auctions" className="block px-3 py-2 rounded-md">
+              <Link href="/auctions" className="block px-3 py-2 rounded-md hover:bg-white/10">
                 Auctions
               </Link>
-              <Link
-                href="/create"
-                className="block px-3 py-2 rounded-md bg-white text-red-700 font-semibold"
-              >
-                Login
-              </Link>
+              {isLogin ? (
+                <Link
+                  href="/profile"
+                  className="block px-3 py-2 rounded-md bg-white text-red-700 font-semibold"
+                >
+                  {session?.user?.name}
+                </Link>
+              ) : (
+                <Link
+                  href="/auth"
+                  className="block px-3 py-2 rounded-md bg-white text-red-700 font-semibold"
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         )}

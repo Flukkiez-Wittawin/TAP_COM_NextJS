@@ -3,16 +3,30 @@ import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import Logo from "@/assets/imgs/Logo.svg";
 
-import GoogleIcon from '@/assets/imgs/Google.svg'
+import GoogleIcon from "@/assets/imgs/Google.svg";
+
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+
+import { useRouter } from "next/navigation";
 
 export default function AuthForm() {
+  const { data: session, status } = useSession();
+  const router = useRouter()
   const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    // รอจนกว่าจะรู้สถานะ session
+    if (status === "authenticated") {
+      router.push("/"); // redirect ไปหน้า Home
+    }
+  }, [status, router]);
 
   const toggleForm = () => setIsLogin(!isLogin);
 
-  const handleGoogleLogin = async () => {
-    await signIn("google", { callbackUrl: "/" }); // หลัง login จะ redirect หน้าแรก
-  };
+  // const handleGoogleLogin = async () => {
+  //   await signIn("google"); // หลัง login จะ redirect หน้าแรก
+  // };
 
   return (
     <div
@@ -70,17 +84,15 @@ export default function AuthForm() {
           </button>
         </form>
 
-        <p className="text-center mt-3 font-semibold text-white/50 cursor-default">OR</p>
+        <p className="text-center mt-3 font-semibold text-white/50 cursor-default">
+          OR
+        </p>
         {/* Login with Google */}
         <button
-          onClick={handleGoogleLogin}
+          onClick={() => signIn("google")}
           className="mt-4 w-full flex items-center justify-center gap-2 bg-white text-red-700 py-2 rounded-lg font-semibold hover:bg-gray-100 cursor-pointer"
         >
-          <img
-            src={GoogleIcon.src}
-            alt="Google"
-            className="w-5 h-5"
-          />
+          <img src={GoogleIcon.src} alt="Google" className="w-5 h-5" />
           เข้าสู่ระบบด้วย Google
         </button>
 
