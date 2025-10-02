@@ -1,11 +1,18 @@
 "use client";
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
 import Logo from "@/assets/imgs/Logo.svg";
+
+import GoogleIcon from '@/assets/imgs/Google.svg'
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
 
   const toggleForm = () => setIsLogin(!isLogin);
+
+  const handleGoogleLogin = async () => {
+    await signIn("google", { callbackUrl: "/" }); // หลัง login จะ redirect หน้าแรก
+  };
 
   return (
     <div
@@ -17,14 +24,12 @@ export default function AuthForm() {
         backgroundSize: "100%",
       }}
     >
-      {/* Overlay form container */}
       <div className="bg-black/80 backdrop-blur-md shadow-2xl rounded-2xl max-w-md w-full p-8 relative text-white z-10">
-        {/* Title */}
         <h2 className="text-3xl font-display text-red-400 text-center mb-6">
           {isLogin ? "เข้าสู่ระบบ" : "สมัครสมาชิก"}
         </h2>
 
-        {/* Form */}
+        {/* Form ปกติ */}
         <form
           className="flex flex-col gap-4 transition-opacity duration-500"
           onSubmit={(e) => {
@@ -65,6 +70,20 @@ export default function AuthForm() {
           </button>
         </form>
 
+        <p className="text-center mt-3 font-semibold text-white/50 cursor-default">OR</p>
+        {/* Login with Google */}
+        <button
+          onClick={handleGoogleLogin}
+          className="mt-4 w-full flex items-center justify-center gap-2 bg-white text-red-700 py-2 rounded-lg font-semibold hover:bg-gray-100 cursor-pointer"
+        >
+          <img
+            src={GoogleIcon.src}
+            alt="Google"
+            className="w-5 h-5"
+          />
+          เข้าสู่ระบบด้วย Google
+        </button>
+
         {/* Switch form */}
         <p className="text-center text-sm text-gray-300 mt-4">
           {isLogin ? "ยังไม่มีบัญชี?" : "มีบัญชีอยู่แล้ว?"}{" "}
@@ -77,7 +96,6 @@ export default function AuthForm() {
         </p>
       </div>
 
-      {/* Optional: subtle background animation */}
       <div className="absolute inset-0 animate-pulse bg-black/10 z-0"></div>
     </div>
   );
