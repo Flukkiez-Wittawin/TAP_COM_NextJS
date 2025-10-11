@@ -1,0 +1,30 @@
+[
+    {
+        "owner_id" : "103424945654328639399",
+        "item_name" : "Rolex Submariner",
+        "item_description" : "A classic luxury watch known for its durability and timeless design.",
+        "starting_bid" : 5000,
+        "current_bid" : 7500,
+        "bid_increment" : 250,
+        "auction_end_time" : "2024-12-31T23:59:59Z",
+        "images" : [
+            "https://example.com/images/rolex_submariner_1.jpg",
+            "https://example.com/images/rolex_submariner_2.jpg"
+        ],
+        "status" : "active",
+        "bids" : [
+            {
+                "bidder_id" : "203424945654328639400",
+                "bid_amount" : 6000,
+                "bid_time" : "2024-11-01T10:00:00Z"
+            },
+            {
+                "bidder_id" : "303424945654328639401",
+                "bid_amount" : 7500,
+                "bid_time" : "2024-11-02T15:30:00Z"
+            }
+        ],
+        "created_at" : "2024-10-01T09:00:00Z",
+        "winner_id" : null
+    }
+]
