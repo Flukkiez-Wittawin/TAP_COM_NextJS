@@ -135,7 +135,7 @@ export default function AuctionDetailPage() {
   useEffect(() => {
     if (!id) return;
 
-    const socket = io("http://localhost:4000");
+    const socket = io(process.env.socket);
     socketRef.current = socket;
 
     socket.on("connect", () => console.log("Socket connected:", socket.id));
@@ -163,11 +163,20 @@ export default function AuctionDetailPage() {
 
   const handleBid = async (amount) => {
     if (!auction) return;
-    if (auctionClosed || auction.seller?.status_name === 'Closed' || auction.seller?.status_id != 'S02') {
+  
+    if (auction?.status_name === 'Pending' || auction?.status_id === 'S01') {
+      setMessage("การประมูลยังไม่เริ่ม");
+      setPlacingBid(false);
+      return;
+    }
+
+    if (auctionClosed || auction?.status_name === 'Closed' || auction?.status_id === 'S03') {
       setMessage("การประมูลได้จบลงไปแล้ว");
       setPlacingBid(false);
       return;
     }
+
+    
 
     const bidAmount = Number(amount);
     if (!bidAmount || bidAmount <= 0) return setMessage("กรุณาใส่จำนวนเงินที่ถูกต้อง");
