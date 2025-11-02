@@ -1,0 +1,12 @@
+[
+    {
+        "id" : "",
+        "FName" : "",
+        "LName" : "",
+        "CitizenID" : "",
+        "Address" : "",
+        "Phone" : "",
+        "RequestRole" : "",
+        "Status" : "waiting"
+    }
+]
