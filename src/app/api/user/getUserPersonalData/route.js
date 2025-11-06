@@ -18,25 +18,13 @@ export async function GET() {
       database: process.env.DB_NAME,
     });
 
-<<<<<<< HEAD
     // ดึงข้อมูลผู้ใช้
     const [users] = await connection.execute(
-      "SELECT user_id, fname, lname, phone, address, citizen_id, avatar FROM users WHERE email = ?",
-=======
-    
-
-    // ดึงข้อมูลผู้ใช้
-    const [users] = await connection.execute(
-      "SELECT user_id, fname, lname, phone, address, citizen_id, avatar, Role_role_id, Group_group_id FROM users WHERE email = ?",
->>>>>>> 4692864 (push from mac)
+      "SELECT user_id, fname, lname, phone, address, citizen_id, avatar, Group_group_id, Role_role_id FROM users WHERE email = ?",
       [session.user.email]
     );
 
     if (users.length === 0) {
-<<<<<<< HEAD
-=======
-      console.log(session.user.email)
->>>>>>> 4692864 (push from mac)
       await connection.end();
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
