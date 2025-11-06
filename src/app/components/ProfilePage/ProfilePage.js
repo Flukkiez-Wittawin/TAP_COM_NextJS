@@ -21,6 +21,11 @@ export default function ProfileDashboard() {
   const [myAuctions, setMyAuctions] = useState([]);
   const [wonAuctions, setWonAuctions] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
+<<<<<<< HEAD
+=======
+  const [isSeller, setIsSeller] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+>>>>>>> 4692864 (push from mac)
 
   // ----------------- Fetch user & auctions -----------------
   useEffect(() => {
@@ -48,8 +53,20 @@ export default function ProfileDashboard() {
         }
       };
 
+<<<<<<< HEAD
       const { ok: okUser, data: dataUser } = await fetchJsonSafe("/api/user/getUserPersonalData");
       if (okUser && dataUser) {
+=======
+      const { ok: okUser, data: dataUser } = await fetchJsonSafe(
+        "/api/user/getUserPersonalData"
+      );
+      if (okUser && dataUser) {
+        // console.log("User Role:", dataUser.Role_role_id);
+        // console.log("User Group:", dataUser.Group_group_id);
+
+        if (dataUser.Role_role_id === "R003") setIsSeller(true);
+        if (dataUser.Group_group_id !== "G001") setIsAdmin(true);
+>>>>>>> 4692864 (push from mac)
         setFormData({
           fname: dataUser.fname || "",
           lname: dataUser.lname || "",
@@ -61,11 +78,29 @@ export default function ProfileDashboard() {
         setAvatarPreview(dataUser.avatar || "/default-avatar.png");
       }
 
+<<<<<<< HEAD
       const { ok: okMy, data: dataMy } = await fetchJsonSafe("/api/auction_data/myAuctions");
       if (okMy && dataMy) setMyAuctions(Array.from(new Map(dataMy.map(a => [a.id, a])).values()));
 
       const { ok: okWon, data: dataWon } = await fetchJsonSafe("/api/auction_data/wonAuctions");
       if (okWon && dataWon) setWonAuctions(Array.from(new Map(dataWon.map(a => [a.id, a])).values()));
+=======
+      const { ok: okMy, data: dataMy } = await fetchJsonSafe(
+        "/api/auction_data/myAuctions"
+      );
+      if (okMy && dataMy)
+        setMyAuctions(
+          Array.from(new Map(dataMy.map((a) => [a.id, a])).values())
+        );
+
+      const { ok: okWon, data: dataWon } = await fetchJsonSafe(
+        "/api/auction_data/wonAuctions"
+      );
+      if (okWon && dataWon)
+        setWonAuctions(
+          Array.from(new Map(dataWon.map((a) => [a.id, a])).values())
+        );
+>>>>>>> 4692864 (push from mac)
 
       setLoadingData(false);
     };
@@ -74,7 +109,12 @@ export default function ProfileDashboard() {
   }, [status, session, router]);
 
   // ----------------- Handlers -----------------
+<<<<<<< HEAD
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+=======
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+>>>>>>> 4692864 (push from mac)
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -90,6 +130,7 @@ export default function ProfileDashboard() {
     formDataObj.append("avatar", avatarFile);
 
     try {
+<<<<<<< HEAD
       const res = await fetch("/api/user/uploadAvatar", { method: "POST", body: formDataObj });
       const text = await res.text();
       let data;
@@ -97,6 +138,23 @@ export default function ProfileDashboard() {
 
       if (res.ok && data) {
         setFormData(prev => ({ ...prev, avatar: data.avatarUrl }));
+=======
+      const res = await fetch("/api/user/uploadAvatar", {
+        method: "POST",
+        body: formDataObj,
+      });
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        alert("Response is not JSON: " + text);
+        return;
+      }
+
+      if (res.ok && data) {
+        setFormData((prev) => ({ ...prev, avatar: data.avatarUrl }));
+>>>>>>> 4692864 (push from mac)
         setAvatarFile(null);
         setAvatarPreview(data.avatarUrl);
         alert("อัปโหลดเรียบร้อย!");
@@ -118,7 +176,16 @@ export default function ProfileDashboard() {
       });
       const text = await res.text();
       let data;
+<<<<<<< HEAD
       try { data = JSON.parse(text); } catch { alert("Response is not JSON: " + text); return; }
+=======
+      try {
+        data = JSON.parse(text);
+      } catch {
+        alert("Response is not JSON: " + text);
+        return;
+      }
+>>>>>>> 4692864 (push from mac)
 
       if (res.ok && data) setEditMode(false);
       else alert("เกิดข้อผิดพลาด: " + (data?.error || "Unknown error"));
@@ -129,12 +196,28 @@ export default function ProfileDashboard() {
   };
 
   const getAuctionImage = (auction) => {
+<<<<<<< HEAD
     if (auction.image) return `/uploads/auctions/auction_${auction.id}/${auction.image}`;
     if (auction.images && auction.images.length > 0) return `/uploads/auctions/auction_${auction.id}/${auction.images[0]}`;
     return "/default-avatar.png";
   };
 
   if (status === "loading" || loadingData) return <p className="text-center mt-10 text-lg text-gray-600">Loading profile...</p>;
+=======
+    if (auction.image)
+      return `/uploads/auctions/auction_${auction.id}/${auction.image}`;
+    if (auction.images && auction.images.length > 0)
+      return `/uploads/auctions/auction_${auction.id}/${auction.images[0]}`;
+    return "/default-avatar.png";
+  };
+
+  if (status === "loading" || loadingData)
+    return (
+      <p className="text-center mt-10 text-lg text-gray-600">
+        Loading profile...
+      </p>
+    );
+>>>>>>> 4692864 (push from mac)
 
   return (
     <div className="bg-gray-100 min-h-screen p-4 sm:p-6 flex justify-center">
@@ -150,7 +233,15 @@ export default function ProfileDashboard() {
             />
             {editMode && (
               <label className="absolute bottom-0 right-0 bg-red-600 text-white p-2 rounded-full shadow-lg cursor-pointer hover:bg-red-700 transition">
+<<<<<<< HEAD
                 <input type="file" className="hidden" onChange={handleAvatarChange} />
+=======
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+>>>>>>> 4692864 (push from mac)
                 ✎
               </label>
             )}
@@ -171,6 +262,7 @@ export default function ProfileDashboard() {
           <div className="mt-4 w-full space-y-3">
             {editMode ? (
               <>
+<<<<<<< HEAD
                 {["fname", "lname", "phone", "address", "citizen_id"].map((key) => (
                   <input
                     key={key}
@@ -184,10 +276,38 @@ export default function ProfileDashboard() {
                 <div className="flex flex-col sm:flex-row gap-2 mt-2">
                   <button onClick={handleSave} className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700">Save</button>
                   <button onClick={() => setEditMode(false)} className="flex-1 bg-gray-200 py-2 rounded hover:bg-gray-300">Cancel</button>
+=======
+                {["fname", "lname", "phone", "address", "citizen_id"].map(
+                  (key) => (
+                    <input
+                      key={key}
+                      name={key}
+                      value={formData[key]}
+                      onChange={handleChange}
+                      className="w-full p-2 border rounded focus:outline-none focus:border-red-500"
+                      placeholder={key.replace("_", " ").toUpperCase()}
+                    />
+                  )
+                )}
+                <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                  <button
+                    onClick={handleSave}
+                    className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => setEditMode(false)}
+                    className="flex-1 bg-gray-200 py-2 rounded hover:bg-gray-300"
+                  >
+                    Cancel
+                  </button>
+>>>>>>> 4692864 (push from mac)
                 </div>
               </>
             ) : (
               <div className="text-center space-y-2 p-4 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300">
+<<<<<<< HEAD
                 <p className="font-semibold text-2xl">{formData.fname} {formData.lname}</p>
                 <p className="text-gray-600">โทรศัพท์: {formData.phone}</p>
                 <p className="text-gray-600">ที่อยู่: {formData.address}</p>
@@ -195,6 +315,59 @@ export default function ProfileDashboard() {
                   <button onClick={() => setEditMode(true)} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto">แก้ไข</button>
                   <button onClick={() => signOut()} className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 w-full sm:w-auto">Logout</button>
                 </div>
+=======
+                <p className="font-semibold text-2xl">
+                  {formData.fname} {formData.lname}
+                </p>
+                <p className="text-gray-600">โทรศัพท์: {formData.phone}</p>
+                <p className="text-gray-600">ที่อยู่: {formData.address}</p>
+                <div className="flex flex-col sm:flex-row gap-2 justify-center mt-2">
+                  <button
+                    onClick={() => setEditMode(true)}
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto"
+                  >
+                    แก้ไข
+                  </button>
+
+                   <button
+                    onClick={() => router.push(`/register_form`)}
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto"
+                  >
+                    สมัครอย่างเป็นทางการ
+                  </button>
+
+                  <button
+                    onClick={() => signOut()}
+                    className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 w-full sm:w-auto"
+                  >
+                    Logout
+                  </button>
+                </div>
+                {isSeller && (
+                  <>
+                  <h1 className='ont-semibold text-xl mt-2'>จัดการร้านค้า</h1>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center mt-2">
+                   <button
+                      onClick={() => router.push(`/auction_upload`)}
+                      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto"
+                    >
+                      อัพโหลดสินค้า
+                    </button>
+                  </div></>
+                )}
+                {isAdmin && (
+                  <>
+                  <h1 className='ont-semibold text-xl mt-2'>จัดการแอดมิน</h1>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center mt-2">
+                    <button
+                      onClick={() => router.push(`/manage_admin`)}
+                      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 w-full sm:w-auto"
+                    >
+                      จัดการข้อมูล
+                    </button>
+                  </div></>
+                )}
+>>>>>>> 4692864 (push from mac)
               </div>
             )}
           </div>
@@ -202,14 +375,29 @@ export default function ProfileDashboard() {
 
         {/* Right: Auction Data */}
         <div className="flex-1 flex flex-col gap-6 max-h-screen overflow-y-auto">
+<<<<<<< HEAD
           {[{ title: "ประมูลของฉัน", data: myAuctions }, { title: "ประมูลที่ชนะ", data: wonAuctions }].map(section => (
             <div key={section.title} className="bg-white rounded-2xl shadow-lg p-6">
+=======
+          {[
+            { title: "ประมูลของฉัน", data: myAuctions },
+            { title: "ประมูลที่ชนะ", data: wonAuctions },
+          ].map((section) => (
+            <div
+              key={section.title}
+              className="bg-white rounded-2xl shadow-lg p-6"
+            >
+>>>>>>> 4692864 (push from mac)
               <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
               {section.data.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">ไม่พบข้อมูล</p>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+<<<<<<< HEAD
                   {section.data.map(a => (
+=======
+                  {section.data.map((a) => (
+>>>>>>> 4692864 (push from mac)
                     <div
                       key={a.id}
                       className="group border rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -226,8 +414,17 @@ export default function ProfileDashboard() {
                         </span>
                       </div>
                       <div className="p-4">
+<<<<<<< HEAD
                         <p className="font-semibold text-lg">{a.name || a.auction_name}</p>
                         <p className="text-gray-500 text-sm mt-1">Auction ID: {a.id}</p>
+=======
+                        <p className="font-semibold text-lg">
+                          {a.name || a.auction_name}
+                        </p>
+                        <p className="text-gray-500 text-sm mt-1">
+                          Auction ID: {a.id}
+                        </p>
+>>>>>>> 4692864 (push from mac)
                       </div>
                     </div>
                   ))}

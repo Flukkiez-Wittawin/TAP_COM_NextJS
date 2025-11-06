@@ -1,7 +1,11 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { saveGoogleUserFromProfile } from "@/lib/googleSaveUser";
+<<<<<<< HEAD
 import { upsertUser } from "@/lib/saveUser";
+=======
+// import { upsertUser } from "@/lib/saveUser";
+>>>>>>> 4692864 (push from mac)
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,7 +51,11 @@ export const authOptions = {
         image: user?.image || null,
         provider: account?.provider || "google",
       };
+<<<<<<< HEAD
       upsertUser(payload);
+=======
+      // upsertUser(payload);
+>>>>>>> 4692864 (push from mac)
       console.log("[NextAuth signIn] saved:", payload);
     },
   },
